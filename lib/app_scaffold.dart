@@ -102,7 +102,7 @@ class AppScaffold extends StatelessWidget {
       appBar: SolidAppBarConfig(
         title: appTitle.split(' - ')[0],
         versionConfig: const SolidVersionConfig(
-          changelogUrl: 'https://github.com/CybrKat/SpireApp/blob/dev/'
+          changelogUrl: 'https://github.com/CybrKat/LillithApp/blob/dev/'
               'CHANGELOG.md',
           showUpdateButton: true,
           downloadUrl: 'https://solidcommunity.au/installers/',

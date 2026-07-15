@@ -53,7 +53,7 @@ Update them for your own deployment:
   during login. **The `appClientId` URL must actually resolve to a Client
   Identifier Document (a `client-profile.jsonld`) that lists these exact
   redirect URIs.** Until you publish that document (and list your
-  `com.example.spireapp://redirect` scheme in it), the identity provider has
+  `com.example.lillithapp://redirect` scheme in it), the identity provider has
   no client to validate and the login page will not appear — this is the most
   common reason a freshly generated app cannot reach the login screen. See the
   [Solid-OIDC client identifiers](https://solidproject.org/TR/oidc#clientids)
@@ -77,13 +77,13 @@ Update them for your own deployment:
 - **`client-profile.jsonld` → GitHub Pages (the `clientId`).** It lives in the
   repository root so that, once you enable GitHub Pages for the repo (Settings →
   Pages → Deploy from a branch → `main` / `/root`), it is served at
-  `https://cybrkat.github.io/SpireApp/client-profile.jsonld` and is re-published
+  `https://cybrkat.github.io/LillithApp/client-profile.jsonld` and is re-published
   automatically on every push. `appClientId` in `lib/constants/app.dart` and the
   document's own `client_id` field must both equal that exact URL, and the
   `.jsonld` must be publicly readable (HTTP 200, no auth).
 - **`redirect.html` → the same Pages site (root).** A copy sits in the repo root
   so a root-served Pages site publishes it at
-  `https://cybrkat.github.io/SpireApp/redirect.html`. The web build also ships
+  `https://cybrkat.github.io/LillithApp/redirect.html`. The web build also ships
   `web/redirect.html` and reads its redirect from `Uri.base.origin` at runtime,
   so the redirect is always same-origin with wherever the app is served — the
   deployed host in production and `http://localhost:4400` under
@@ -93,7 +93,7 @@ Update them for your own deployment:
 Verify the document is reachable:
 
 ```bash
-curl -I https://cybrkat.github.io/SpireApp/client-profile.jsonld   # expect 200
+curl -I https://cybrkat.github.io/LillithApp/client-profile.jsonld   # expect 200
 ```
 
 The OIDC redirect is pre-wired so that login works on every platform:

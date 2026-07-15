@@ -43,7 +43,7 @@ const String appServerUrl = 'https://pods.solidcommunity.au';
 /// underscores. Every other identifier keeps the full project name.
 
 const String appClientId =
-    'https://cybrkat.github.io/SpireApp/client-profile.jsonld';
+    'https://cybrkat.github.io/LillithApp/client-profile.jsonld';
 
 /// One redirect URI per platform; SolidUI's `pickRedirectUri` selects the right
 /// one at runtime. Keep this list in step with the `redirect_uris` in the
@@ -61,7 +61,7 @@ const String appClientId =
 /// serves Windows/Linux.
 
 List<String> get appRedirectUris => kIsWeb
-    ? ['https://cybrkat.github.io/SpireApp/redirect.html']
+    ? ['https://cybrkat.github.io/LillithApp/redirect.html']
     : const [
         'com.example.lillithapp://redirect',
         'http://localhost:4400/redirect.html',
@@ -82,7 +82,7 @@ const String appPodDirectory = 'lillith_app';
 /// Homepage opened from the login page's info button. Point this at your own
 /// project page or documentation.
 
-const String appLink = 'https://cybrkat.github.io/SpireApp/';
+const String appLink = 'https://cybrkat.github.io/LillithApp/';
 
 /// Shared upload configuration for any `SolidFile` view in LillithApp.
 ///
