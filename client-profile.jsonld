@@ -1,16 +1,16 @@
 {
   "@context": "https://www.w3.org/ns/solid/oidc-context.jsonld",
-  "client_id": "https://github.com/CybrKat/SpireApp/client-profile.jsonld",
-  "client_name": "SpireApp",
+  "client_id": "https://cybrkat.github.io/SpireApp/client-profile.jsonld",
+  "client_name": "LillithApp",
   "application_type": "native",
   "redirect_uris": [
-    "https://github.com/CybrKat/SpireApp/redirect.html",
-    "com.example.spireapp://redirect",
+    "https://cybrkat.github.io/SpireApp/redirect.html",
+    "com.example.lillithapp://redirect",
     "http://localhost:4400/redirect.html"
   ],
   "post_logout_redirect_uris": [
-    "https://github.com/CybrKat/SpireApp/redirect.html",
-    "com.example.spireapp://redirect",
+    "https://cybrkat.github.io/SpireApp/redirect.html",
+    "com.example.lillithapp://redirect",
     "http://localhost:4400/redirect.html"
   ],
   "scope": "openid profile offline_access webid",
