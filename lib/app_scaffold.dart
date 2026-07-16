@@ -15,7 +15,12 @@ import 'package:lillith_app/constants/app.dart';
 import 'package:lillith_app/home.dart';
 import 'package:lillith_app/screens/browse_files.dart';
 import 'package:lillith_app/screens/history.dart';
+import 'package:lillith_app/screens/learn.dart';
 import 'package:lillith_app/screens/log_entry.dart';
+import 'package:lillith_app/screens/privacy.dart';
+import 'package:lillith_app/screens/profile.dart';
+import 'package:lillith_app/screens/relief.dart';
+import 'package:lillith_app/screens/shopping.dart';
 
 final _scaffoldController = SolidScaffoldController();
 
@@ -37,7 +42,7 @@ class AppScaffold extends StatelessWidget {
 
       menu: const [
         SolidMenuItem(
-          icon: Icons.favorite,
+          icon: Icons.spa_rounded,
           title: 'Dashboard',
           tooltip: '''
 
@@ -50,7 +55,7 @@ class AppScaffold extends StatelessWidget {
           child: Home(title: appTitle),
         ),
         SolidMenuItem(
-          icon: Icons.add_chart,
+          icon: Icons.edit_note_rounded,
           title: 'Log',
           tooltip: '''
 
@@ -63,7 +68,7 @@ class AppScaffold extends StatelessWidget {
           child: LogEntry(),
         ),
         SolidMenuItem(
-          icon: Icons.show_chart,
+          icon: Icons.insights_rounded,
           title: 'History',
           tooltip: '''
 
@@ -75,7 +80,73 @@ class AppScaffold extends StatelessWidget {
           child: History(),
         ),
         SolidMenuItem(
-          icon: Icons.folder,
+          icon: Icons.healing_rounded,
+          title: 'Relief',
+          tooltip: '''
+
+            **Relief**
+
+            Gentle, science-backed ideas for your symptoms, sourced from
+            trusted health bodies and real people — and re-ranked to whatever
+            has worked best for you.
+
+            ''',
+          child: Relief(),
+        ),
+        SolidMenuItem(
+          icon: Icons.shopping_basket_rounded,
+          title: 'Shopping',
+          tooltip: '''
+
+            **Shopping list**
+
+            Relief items you want to buy, saved privately on your POD. Find
+            them nearby or online.
+
+            ''',
+          child: Shopping(),
+        ),
+        SolidMenuItem(
+          icon: Icons.menu_book_rounded,
+          title: 'Learn',
+          tooltip: '''
+
+            **Learn**
+
+            A kind, curious place to understand your cycle: a daily health
+            fact and an "ask me anything" answered from trusted sources.
+
+            ''',
+          child: Learn(),
+        ),
+        SolidMenuItem(
+          icon: Icons.spa_rounded,
+          title: 'My Profile',
+          tooltip: '''
+
+            **My Profile**
+
+            Optional, private notes on conditions (endometriosis, PCOS…) and
+            fertility. Also loads a month of sample data to explore the app.
+
+            ''',
+          child: Profile(),
+        ),
+        SolidMenuItem(
+          icon: Icons.lock_rounded,
+          title: 'Privacy',
+          tooltip: '''
+
+            **Privacy & Sharing**
+
+            See how your encrypted data stays yours, and share read-only
+            access with someone you trust (with one-tap revoke).
+
+            ''',
+          child: Privacy(),
+        ),
+        SolidMenuItem(
+          icon: Icons.folder_rounded,
           title: 'App Files',
           tooltip: '''
 
@@ -87,7 +158,7 @@ class AppScaffold extends StatelessWidget {
           child: SolidFile(uploadConfig: appUploadConfig),
         ),
         SolidMenuItem(
-          icon: Icons.storage,
+          icon: Icons.cloud_rounded,
           title: 'All POD Files',
           tooltip: '''
 
@@ -109,7 +180,7 @@ class AppScaffold extends StatelessWidget {
         ),
         actions: [
           SolidAppBarAction(
-            icon: Icons.add_chart,
+            icon: Icons.edit_note_rounded,
             onPressed: () => _scaffoldController.navigateToSubpage(
               const LogEntry(),
             ),

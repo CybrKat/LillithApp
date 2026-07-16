@@ -133,7 +133,14 @@ readings and cycle predictions stay private on your own Solid POD.
 // ── LillithApp data storage ──────────────────────────────────────────────────
 
 /// Relative path (within the app's `data` directory on the POD) of the file
-/// holding all logged skin-temperature readings and period events, serialised
-/// as a single JSON document. Written encrypted so the health data is private.
+/// holding all logged cycle data (temperatures, period events, daily flow /
+/// symptom logs, remedy feedback, shopping list and profile) as a single JSON
+/// document.
+///
+/// The extension MUST be `.ttl`: solidpod stores *encrypted* resources as
+/// Turtle documents (the ciphertext is held in an RDF triple), and it rejects
+/// any other extension for an encrypted write with "Encrypted text file should
+/// be in turtle format". The JSON we serialise is the *plaintext* that gets
+/// encrypted into this Turtle file — it is never stored in the clear.
 
-const String healthDataFile = 'cycle_data.json';
+const String healthDataFile = 'cycle_data.ttl';

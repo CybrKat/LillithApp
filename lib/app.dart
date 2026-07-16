@@ -11,6 +11,7 @@ import 'package:solidui/solidui.dart';
 
 import 'package:lillith_app/app_scaffold.dart';
 import 'package:lillith_app/constants/app.dart';
+import 'package:lillith_app/theme.dart';
 
 // This widget is the root of the application. On startup it calls upon
 // [SolidLogin] to connect to the user's Pod stored within their data vault on
@@ -29,15 +30,12 @@ class App extends StatelessWidget {
 
       title: appTitle,
 
-      // A warm rose/plum seed evokes the cycle-tracking domain while keeping a
-      // full Material 3 palette in both light and dark modes.
+      // A soft lilac/amethyst palette with gentle rounded shapes carries the
+      // feminine, calming feel of LillithApp across both light and dark modes.
+      // See lib/theme.dart for the full palette and component styling.
 
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFFB0326A),
-        ),
-        useMaterial3: true,
-      ),
+      theme: lillithLightTheme,
+      darkTheme: lillithDarkTheme,
 
       home: SolidLogin(
         title: appTitle.replaceAll(' - ', '\n'),

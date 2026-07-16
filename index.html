@@ -1,14 +1,211 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>My Page</title>
-        <style>
-        body { font-family: sans-serif; text-align: center; margin-top: 100px; }
-        </style>
-    </head>
-<body>
-    <h1>Hello, World!</h1>
-    <p>This is a simple index.html page.</p>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LillithApp — your private cycle tracker</title>
+    <meta
+      name="description"
+      content="LillithApp is a private, science-backed menstrual cycle tracker. Your data stays encrypted on your own Solid Pod — you own it, nobody else."
+    />
+    <style>
+      :root {
+        --purple: #9b72cf;
+        --purple-deep: #6d4aa0;
+        --lilac: #f3ecfb;
+        --lilac-2: #e7dcf7;
+        --ink: #2c2237;
+        --muted: #6b6478;
+        --card: #ffffff;
+        --radius: 22px;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+        color: var(--ink);
+        background: linear-gradient(180deg, var(--lilac) 0%, #ffffff 60%);
+        line-height: 1.6;
+      }
+      .wrap { max-width: 860px; margin: 0 auto; padding: 0 20px; }
+      header {
+        text-align: center;
+        padding: 72px 20px 48px;
+        background: radial-gradient(
+          120% 120% at 50% 0%,
+          var(--lilac-2) 0%,
+          transparent 70%
+        );
+      }
+      .logo {
+        width: 84px; height: 84px; border-radius: 26px;
+        background: linear-gradient(135deg, var(--purple), var(--purple-deep));
+        display: grid; place-items: center; margin: 0 auto 20px;
+        box-shadow: 0 10px 30px rgba(109, 74, 160, 0.35);
+        font-size: 40px;
+      }
+      h1 { font-size: 2.5rem; margin: 0 0 8px; letter-spacing: -0.5px; }
+      .tagline { font-size: 1.2rem; color: var(--purple-deep); font-weight: 600; margin: 0 0 6px; }
+      .sub { color: var(--muted); max-width: 620px; margin: 12px auto 0; }
+      h2 {
+        font-size: 1.6rem; margin: 48px 0 4px;
+        display: flex; align-items: center; gap: 10px;
+      }
+      h2 .dot {
+        width: 12px; height: 12px; border-radius: 50%;
+        background: var(--purple); display: inline-block;
+      }
+      h3 { margin: 24px 0 6px; color: var(--purple-deep); }
+      p { margin: 8px 0; }
+      .kid {
+        background: var(--lilac);
+        border-left: 4px solid var(--purple);
+        border-radius: 12px;
+        padding: 12px 16px;
+        margin: 10px 0 4px;
+        color: var(--purple-deep);
+      }
+      .kid strong { color: var(--purple-deep); }
+      .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); margin-top: 16px; }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--lilac-2);
+        border-radius: var(--radius);
+        padding: 20px;
+        box-shadow: 0 6px 20px rgba(109, 74, 160, 0.06);
+      }
+      .card .emoji { font-size: 26px; }
+      .card h4 { margin: 8px 0 4px; }
+      .card p { color: var(--muted); font-size: 0.95rem; margin: 0; }
+      ul { padding-left: 20px; }
+      li { margin: 6px 0; }
+      code {
+        background: var(--lilac-2); padding: 2px 7px; border-radius: 6px;
+        font-size: 0.9em; color: var(--purple-deep);
+      }
+      .callout {
+        background: linear-gradient(135deg, var(--purple), var(--purple-deep));
+        color: #fff; border-radius: var(--radius); padding: 24px;
+        margin: 24px 0; box-shadow: 0 10px 30px rgba(109, 74, 160, 0.3);
+      }
+      .callout h3 { color: #fff; margin-top: 0; }
+      footer { text-align: center; color: var(--muted); padding: 48px 20px 64px; font-size: 0.9rem; }
+      a { color: var(--purple-deep); }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">🌙</div>
+      <h1>LillithApp</h1>
+      <p class="tagline">Your cycle. Your data. Yours to keep.</p>
+      <p class="sub">
+        A private, science-backed menstrual <strong>cycle</strong> tracker whose
+        data stays <strong>encrypted on your own Solid Pod</strong> — so you
+        alone own and control it.
+      </p>
+    </header>
+
+    <main class="wrap">
+      <div class="kid">
+        <strong>In plain words (for anyone, any age):</strong> A period-and-body
+        diary that keeps your secrets in a locked box that only you have the key
+        to. No company gets to peek. No one sells it. It's yours.
+      </div>
+
+      <h2><span class="dot"></span>What problem does it solve?</h2>
+      <p>
+        Most cycle-tracking apps make money from the most private health data
+        there is — your body, your cycle, your fertility. They store it on
+        <em>their</em> servers and can share, sell or leak it.
+      </p>
+      <p>
+        <strong>LillithApp flips that.</strong> Your information lives in
+        <em>your</em> own online locker (a Solid "Pod"), scrambled so no one but
+        you can read it — and you decide if anyone else ever sees it.
+      </p>
+      <div class="kid">
+        <strong>Kid version:</strong> Imagine a diary. Other apps keep your
+        diary in their cupboard and read it. LillithApp gives the diary back to
+        <em>you</em>, locks it, and only you have the key. 🔑
+      </div>
+
+      <h2><span class="dot"></span>What can it do?</h2>
+      <div class="grid">
+        <div class="card"><div class="emoji">🩸</div><h4>Track your flow</h4><p>Tap how light or heavy each day is, with gentle drop icons.</p></div>
+        <div class="card"><div class="emoji">🌡️</div><h4>Predict your cycle</h4><p>Uses your skin-temperature pattern and history to estimate your next period.</p></div>
+        <div class="card"><div class="emoji">💜</div><h4>Log symptoms & pain</h4><p>Note cramps, mood, headaches and more, with the 0–10 pain scale nurses use.</p></div>
+        <div class="card"><div class="emoji">🔮</div><h4>Learn your pattern</h4><p>It quietly learns which symptoms tend to show up when — a forecast from <em>your</em> data.</p></div>
+        <div class="card"><div class="emoji">🌿</div><h4>Relief that's real</h4><p>Science-backed tips (NHS, Cleveland Clinic, ACOG…) — no ads — that re-rank to what works for you.</p></div>
+        <div class="card"><div class="emoji">🛒</div><h4>Shopping list</h4><p>Save relief items and find them nearby or online.</p></div>
+        <div class="card"><div class="emoji">📚</div><h4>Learn & ask</h4><p>A daily health fact and a kind "ask me anything" answered from trusted sources.</p></div>
+        <div class="card"><div class="emoji">🔐</div><h4>Share safely</h4><p>Give a doctor read-only access with one tap — and take it back anytime.</p></div>
+      </div>
+
+      <h2><span class="dot"></span>How your data stays yours (Solid)</h2>
+      <p>
+        LillithApp is built on the <a href="https://solidproject.org" target="_blank" rel="noopener">W3C Solid</a>
+        standard. Here's the whole thing in simple pieces:
+      </p>
+
+      <h3>1. It reads <em>and</em> writes to your Pod</h3>
+      <p>
+        When you log in (to a Community Solid Server or any Solid server), the app
+        saves your cycle data into your Pod and reads it back — using your own
+        authenticated session. There's no LillithApp database anywhere.
+      </p>
+
+      <h3>2. Encryption is the heart of it</h3>
+      <p>
+        Everything is written with <code>writePod(encrypted: true)</code>. Your
+        Pod stores <em>scrambled</em> data, not readable text. Without your key,
+        it's gibberish — even to whoever runs the server.
+      </p>
+      <div class="kid"><strong>Kid version:</strong> Your diary is written in a secret code only your key can unlock.</div>
+
+      <h3>3. You control who sees it (access control &amp; consent)</h3>
+      <p>
+        The Privacy screen uses Solid's access-control rules (WAC/ACP) —
+        <code>grantPermission</code>, <code>readPermission</code>,
+        <code>revokePermission</code> — so you can give one trusted person
+        read-only access after a clear "I consent" step, see exactly who has
+        access, and revoke it whenever you want.
+      </p>
+
+      <h3>4. Data minimisation</h3>
+      <p>
+        The app keeps only what you actually log. Clear a day, and it's truly
+        gone — empty entries aren't stored.
+      </p>
+
+      <div class="callout">
+        <h3>Try the whole app in one tap</h3>
+        <p>
+          New here? Open <strong>My Profile → "Load a month of sample data"</strong>.
+          It fills your Pod with a realistic month of readings, period starts and
+          symptom logs so every feature works straight away — perfect for a demo.
+        </p>
+      </div>
+
+      <h2><span class="dot"></span>Is this medical advice?</h2>
+      <p>
+        No. LillithApp gives gentle, science-backed wellness information and
+        estimates from your own data. It is <strong>not</strong> a medical device
+        and must not be used for contraception or diagnosis. If something worries
+        you, please talk to a doctor, nurse or pharmacist — asking is always okay. 💜
+      </p>
+
+      <h2><span class="dot"></span>For developers</h2>
+      <ul>
+        <li>Built with Flutter/Dart on <a href="https://pub.dev/packages/solidpod" target="_blank" rel="noopener">solidpod</a> and <a href="https://pub.dev/packages/solidui" target="_blank" rel="noopener">solidui</a>.</li>
+        <li>All health data is a single encrypted JSON document in the app's Pod folder.</li>
+        <li>Sharing uses Solid Web Access Control / ACP via <code>grantPermission</code> / <code>readPermission</code> / <code>revokePermission</code>.</li>
+        <li>Login is Solid-OIDC; this page's <code>client-profile.jsonld</code> lists the app's redirect URIs.</li>
+      </ul>
+    </main>
+
+    <footer>
+      Made with care for the people who need it. 🌙 · LillithApp ·
+      Your cycle, encrypted on your own Solid Pod.
+    </footer>
+  </body>
 </html>

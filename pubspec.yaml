@@ -21,6 +21,7 @@ dependencies:
   solidui: ^1.0.14
   solidpod: ^1.0.13
   window_manager: ^0.5.1
+  url_launcher: ^6.3.0
 
 dev_dependencies:
   flutter_test:

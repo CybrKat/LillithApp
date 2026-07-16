@@ -1,26 +1,57 @@
 # LillithApp
 
-LillithApp — a private menstrual-cycle tracker that predicts your next period
-from the skin temperature recorded by a smart ring or watch.
+**A private, science-backed menstrual cycle tracker whose data stays encrypted
+on your own Solid Pod — so you alone own and control it.**
 
 Built on the [`solidui`](https://pub.dev/packages/solidui) /
 [`solidpod`](https://pub.dev/packages/solidpod) scaffold, so all of your health
 data stays **encrypted on your own Solid Pod** — never on someone else's server.
-It comes with:
 
-- a [`SolidLogin`] screen that connects to the user's data vault on their
-  chosen Solid server;
-- a [`SolidScaffold`] with a navigation rail (collapsing to a drawer on narrow
-  screens) and a status bar showing the server, login and security-key state;
-- a **Dashboard** with the predicted next period, current cycle day and latest
-  temperature;
-- a **Log** page for daily skin temperature and period starts (import from a
-  ring/watch is stubbed and ready to wire up);
-- a **History** page with a temperature-trend chart and every logged reading;
-- theme switching, an About dialog and an Invite Others action.
+## The real-world problem
+
+Most cycle-tracking apps monetise the most intimate health data there is — your
+cycle, fertility and symptoms — storing it on their servers where it can be
+shared, sold or leaked. LillithApp flips that: your data lives **encrypted on
+your own Pod**, and you decide if anyone else ever sees it.
+
+## Features
+
+- **Dashboard** — a rotating, cited **"Today's health fact"**, your predicted
+  next period, current cycle day and latest temperature, a **personal symptom
+  forecast** that learns from your history, and a plain-language data-ownership
+  card.
+- **Log** — interactive period-**flow** selector, the **0–10 clinical pain
+  scale**, tappable **symptoms**, plus skin-temperature entry (ring/watch import
+  stubbed and ready).
+- **History** — temperature-trend chart with period markers and every reading.
+- **Relief** — evidence-based, **sourced** self-care suggestions (NHS, Cleveland
+  Clinic, ACOG, Office on Women's Health, NIH…) for each symptom, that **re-rank
+  to what has worked for you**, with "see a professional" red-flags and
+  add-to-shopping / find-nearby / buy-online actions.
+- **Shopping** — a Pod-saved relief shopping list with map/retailer link-outs.
+- **Learn** — the daily fact library plus a warm, counsellor-toned **"ask me
+  anything"** answered from a curated, offline, cited knowledge base (nothing
+  leaves the device).
+- **My Profile** — optional conditions (endometriosis, PCOS, dysmenorrhea…) and
+  fertility context, plus a one-tap **"load a month of sample data"** for demos.
+- **Privacy & Sharing** — data-ownership explainer and real **WAC/ACP** sharing:
+  grant a trusted person read-only access (with explicit consent), see who has
+  access, and revoke it anytime.
+- Theme switching (soft purple palette), About dialog and Invite Others.
 
 > LillithApp gives wellness estimates only. It is **not** a medical device and
 > must not be used for contraception or diagnosis.
+
+## How it uses Solid
+
+- **Reads and writes** all health data to the user's Pod through an
+  authenticated Solid session (`readPod` / `writePod`).
+- **Encryption is the headline:** every record is written with
+  `writePod(encrypted: true)` — the Pod stores ciphertext.
+- **Access control (WAC/ACP) + consent:** the Privacy screen uses
+  `grantPermission` / `readPermission` / `revokePermission` to share read-only
+  and revoke, each behind an explicit consent step.
+- **Data minimisation:** empty days are pruned; only what you log is stored.
 
 ## How prediction works
 
@@ -114,17 +145,33 @@ lib/
   main.dart            Application entry point and desktop window setup.
   app.dart             Root widget; wraps the app in SolidLogin.
   app_scaffold.dart    SolidScaffold with the nav bar, status bar and menu.
-  home.dart            Dashboard: next-period prediction, cycle day, latest temp.
-  constants/app.dart   App-wide constants (title, POD dir, data file, invite).
+  home.dart            Dashboard: fact of the day, prediction, forecast, ownership.
+  theme.dart           Soft purple palette + rounded component themes.
+  constants/
+    app.dart           App-wide constants (title, POD dir, data file, invite).
+    symptom_advice.dart  Curated, sourced relief remedies per symptom.
+    period_facts.dart    Science-backed facts + offline Q&A knowledge base.
   models/
     temperature_reading.dart  One day's skin-temperature reading (+ source).
     period_event.dart         A logged period start.
+    daily_log.dart            A day's flow, symptoms and 0–10 pain.
+    remedy_feedback.dart      The user's helped/didn't-help verdict per remedy.
+    shopping_list.dart        A relief shopping-list item.
+    health_profile.dart       Conditions + fertility treatments + notes.
   services/
     cycle_predictor.dart      Temperature-shift + cycle-average prediction.
-    health_repository.dart     Loads/saves encrypted cycle data on the POD.
+    symptom_predictor.dart    Learns symptom/pain patterns by cycle day.
+    health_repository.dart     Loads/saves all encrypted data on the POD.
+  utils/
+    links.dart         Maps "near me" / retailer link-outs (no GPS needed).
   screens/
-    log_entry.dart     Log temperature / period starts; device-import hook.
+    log_entry.dart     Log flow, pain, symptoms and temperature.
     history.dart       Temperature-trend chart and reading list.
+    relief.dart        Ranked, sourced relief that learns from your feedback.
+    shopping.dart      Pod-saved relief shopping list.
+    learn.dart         Daily fact library + curated, kind Q&A.
+    profile.dart       Conditions/fertility profile + sample-data loader.
+    privacy.dart       Data ownership + WAC/ACP sharing and consent.
     browse_files.dart  Whole-POD file browser (SolidFile at the root).
 test/
   cycle_predictor_test.dart   Deterministic tests for the prediction logic.

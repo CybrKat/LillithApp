@@ -62,8 +62,7 @@ class _HistoryState extends State<History> {
         }
 
         final readings = _repo.readings; // newest first
-        final periodDays =
-            _repo.periods.map((p) => p.startDate).toSet();
+        final periodDays = _repo.periods.map((p) => p.startDate).toSet();
 
         if (readings.isEmpty) {
           return _EmptyState();
@@ -104,12 +103,10 @@ class _HistoryState extends State<History> {
                           periodDays: periodDays,
                           lineColor: Theme.of(context).colorScheme.primary,
                           markerColor: Theme.of(context).colorScheme.error,
-                          gridColor: Theme.of(context)
-                              .colorScheme
-                              .outlineVariant,
-                          textColor: Theme.of(context)
-                              .colorScheme
-                              .onSurfaceVariant,
+                          gridColor:
+                              Theme.of(context).colorScheme.outlineVariant,
+                          textColor:
+                              Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
                       ),
                     ),
@@ -128,8 +125,8 @@ class _HistoryState extends State<History> {
                 child: ListTile(
                   leading: Icon(
                     periodDays.contains(r.date)
-                        ? Icons.water_drop
-                        : Icons.thermostat,
+                        ? Icons.water_drop_rounded
+                        : Icons.thermostat_rounded,
                     color: periodDays.contains(r.date)
                         ? Theme.of(context).colorScheme.error
                         : Theme.of(context).colorScheme.primary,
@@ -137,7 +134,7 @@ class _HistoryState extends State<History> {
                   title: Text('${r.celsius.toStringAsFixed(2)} °C'),
                   subtitle: Text('${_fmtDate(r.date)} · ${r.source.label}'),
                   trailing: IconButton(
-                    icon: const Icon(Icons.delete_outline),
+                    icon: const Icon(Icons.delete_outline_rounded),
                     tooltip: 'Delete',
                     onPressed: () => _confirmDelete(r),
                   ),
@@ -190,8 +187,7 @@ class _TempChartPainter extends CustomPainter {
     double xFor(int i) => readings.length == 1
         ? leftPad + chartW / 2
         : leftPad + chartW * i / (readings.length - 1);
-    double yFor(double t) =>
-        topPad + chartH * (1 - (t - minT) / (maxT - minT));
+    double yFor(double t) => topPad + chartH * (1 - (t - minT) / (maxT - minT));
 
     // Horizontal grid lines + axis labels (min, mid, max).
     final gridPaint = Paint()
@@ -273,7 +269,7 @@ class _EmptyState extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
-              Icons.show_chart,
+              Icons.spa_rounded,
               size: 64,
               color: Theme.of(context).colorScheme.outline,
             ),
@@ -298,8 +294,18 @@ class _EmptyState extends StatelessWidget {
 
 String _fmtDate(DateTime d) {
   const months = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
   ];
   return '${d.day} ${months[d.month - 1]} ${d.year}';
 }

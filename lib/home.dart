@@ -9,8 +9,11 @@ library;
 import 'package:flutter/material.dart';
 
 import 'package:lillith_app/models/temperature_reading.dart';
+import 'package:lillith_app/screens/learn.dart' show factOfTheDay;
 import 'package:lillith_app/services/cycle_predictor.dart';
 import 'package:lillith_app/services/health_repository.dart';
+import 'package:lillith_app/services/symptom_predictor.dart';
+import 'package:lillith_app/utils/links.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key, required this.title});
@@ -24,6 +27,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final _repo = HealthRepository.instance;
   static const _predictor = CyclePredictor();
+  static const _symptomPredictor = SymptomPredictor();
 
   @override
   void initState() {
@@ -41,10 +45,16 @@ class _HomeState extends State<Home> {
           return const Center(child: CircularProgressIndicator());
         }
 
+        final now = DateTime.now();
         final prediction = _predictor.predict(
           readings: _repo.readings,
           periods: _repo.periods,
-          today: DateTime.now(),
+          today: now,
+        );
+        final forecast = _symptomPredictor.predict(
+          logs: _repo.dailyLogs,
+          periods: _repo.periods,
+          today: now,
         );
 
         return SingleChildScrollView(
@@ -56,6 +66,8 @@ class _HomeState extends State<Home> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   if (_repo.error != null) _ErrorBanner(message: _repo.error!),
+                  const _FactOfTheDayCard(),
+                  const SizedBox(height: 16),
                   _PredictionCard(prediction: prediction),
                   const SizedBox(height: 16),
                   _StatsRow(
@@ -63,6 +75,10 @@ class _HomeState extends State<Home> {
                     latestReading:
                         _repo.readings.isEmpty ? null : _repo.readings.first,
                   ),
+                  const SizedBox(height: 16),
+                  if (forecast.hasData) _ForecastCard(forecast: forecast),
+                  if (forecast.hasData) const SizedBox(height: 16),
+                  const _DataOwnershipCard(),
                   const SizedBox(height: 16),
                   const _DisclaimerCard(),
                 ],
@@ -109,7 +125,7 @@ class _PredictionCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.favorite, color: scheme.onPrimaryContainer),
+                Icon(Icons.favorite_rounded, color: scheme.onPrimaryContainer),
                 const SizedBox(width: 12),
                 Text(
                   'Next period',
@@ -164,7 +180,7 @@ class _StatsRow extends StatelessWidget {
       children: [
         Expanded(
           child: _StatTile(
-            icon: Icons.calendar_today,
+            icon: Icons.calendar_today_rounded,
             label: 'Cycle day',
             value: prediction.currentCycleDay?.toString() ?? '—',
           ),
@@ -172,7 +188,7 @@ class _StatsRow extends StatelessWidget {
         const SizedBox(width: 12),
         Expanded(
           child: _StatTile(
-            icon: Icons.thermostat,
+            icon: Icons.thermostat_rounded,
             label: 'Latest temp',
             value: latestReading == null
                 ? '—'
@@ -182,7 +198,7 @@ class _StatsRow extends StatelessWidget {
         const SizedBox(width: 12),
         Expanded(
           child: _StatTile(
-            icon: Icons.repeat,
+            icon: Icons.loop_rounded,
             label: 'Avg cycle',
             value: prediction.averageCycleLength == null
                 ? '—'
@@ -257,6 +273,156 @@ class _ConfidenceChip extends StatelessWidget {
   }
 }
 
+class _FactOfTheDayCard extends StatelessWidget {
+  const _FactOfTheDayCard();
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final fact = factOfTheDay();
+    return Card(
+      color: scheme.secondaryContainer,
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.auto_awesome_rounded,
+                  color: scheme.onSecondaryContainer,
+                  size: 20,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  "Today's health fact",
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: scheme.onSecondaryContainer,
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Text(
+              fact.text,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: scheme.onSecondaryContainer,
+                  ),
+            ),
+            const SizedBox(height: 8),
+            Align(
+              alignment: Alignment.centerRight,
+              child: ActionChip(
+                visualDensity: VisualDensity.compact,
+                avatar: const Icon(Icons.open_in_new_rounded, size: 14),
+                label: Text(fact.source.name),
+                onPressed: () => openUrl(fact.source.url),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ForecastCard extends StatelessWidget {
+  const _ForecastCard({required this.forecast});
+
+  final SymptomForecast forecast;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.insights_rounded, color: scheme.primary, size: 20),
+                const SizedBox(width: 8),
+                Text(
+                  'Your forecast',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Text(
+              forecast.explanation,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            if (forecast.likely.isNotEmpty) ...[
+              const SizedBox(height: 12),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  for (final l in forecast.likely.take(5))
+                    Chip(
+                      avatar: Icon(l.symptom.icon, size: 16),
+                      label: Text('${l.symptom.label} · ${l.percent}%'),
+                    ),
+                ],
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _DataOwnershipCard extends StatelessWidget {
+  const _DataOwnershipCard();
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Card(
+      color: scheme.primaryContainer,
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(Icons.lock_rounded, color: scheme.onPrimaryContainer),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'This is yours, and only yours',
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          color: scheme.onPrimaryContainer,
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Everything you log is encrypted and stored on your own '
+                    'Solid POD — not our servers. See the Privacy page to '
+                    'share with a doctor or take it back anytime.',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: scheme.onPrimaryContainer,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _DisclaimerCard extends StatelessWidget {
   const _DisclaimerCard();
 
@@ -270,7 +436,7 @@ class _DisclaimerCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Icon(
-              Icons.info_outline,
+              Icons.favorite_border_rounded,
               size: 20,
               color: Theme.of(context).colorScheme.outline,
             ),
@@ -307,7 +473,7 @@ class _ErrorBanner extends StatelessWidget {
       child: Row(
         children: [
           Icon(
-            Icons.warning_amber,
+            Icons.warning_amber_rounded,
             color: Theme.of(context).colorScheme.onErrorContainer,
           ),
           const SizedBox(width: 12),
@@ -327,8 +493,18 @@ class _ErrorBanner extends StatelessWidget {
 
 String _fmtDate(DateTime d) {
   const months = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
   ];
   return '${d.day} ${months[d.month - 1]} ${d.year}';
 }

@@ -134,26 +134,26 @@ class CyclePredictor {
         ? null
         : cycleLengths.reduce((a, b) => a + b) / cycleLengths.length;
 
-    final cycleAverageEstimate =
-        lastStart.add(Duration(days: (avgCycleLength ?? _defaultCycleLength).round()));
+    final cycleAverageEstimate = lastStart
+        .add(Duration(days: (avgCycleLength ?? _defaultCycleLength).round()));
 
     // ── Temperature-shift estimate for the current cycle ───────────────────
-    final lutealLength = _historicalLutealLength(readings, starts) ??
-        _defaultLutealLength;
+    final lutealLength =
+        _historicalLutealLength(readings, starts) ?? _defaultLutealLength;
     final ovulation = _detectOvulation(
       readings: readings,
       cycleStart: lastStart,
       today: now,
     );
-    final shiftEstimate =
-        ovulation?.add(Duration(days: lutealLength));
+    final shiftEstimate = ovulation?.add(Duration(days: lutealLength));
 
     // ── Choose the best-supported estimate ─────────────────────────────────
     if (shiftEstimate != null) {
       return CyclePrediction(
         method: PredictionMethod.temperatureShift,
-        confidence:
-            cycleLengths.length >= 2 ? PredictionConfidence.high : PredictionConfidence.medium,
+        confidence: cycleLengths.length >= 2
+            ? PredictionConfidence.high
+            : PredictionConfidence.medium,
         predictedNextPeriod: shiftEstimate,
         lastPeriodStart: lastStart,
         currentCycleDay: currentCycleDay,
