@@ -28,6 +28,19 @@ class _HomeState extends State<Home> {
   final _repo = HealthRepository.instance;
   static const _predictor = CyclePredictor();
   static const _symptomPredictor = SymptomPredictor();
+  bool _seeding = false;
+
+  Future<void> _loadSample() async {
+    setState(() => _seeding = true);
+    await _repo.seedSampleMonth();
+    if (!mounted) return;
+    setState(() => _seeding = false);
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(const SnackBar(
+        content: Text('Loaded a month of sample data — explore every feature!'),
+      ),);
+  }
 
   @override
   void initState() {
@@ -68,6 +81,10 @@ class _HomeState extends State<Home> {
                   if (_repo.error != null) _ErrorBanner(message: _repo.error!),
                   const _FactOfTheDayCard(),
                   const SizedBox(height: 16),
+                  if (!_repo.hasData) ...[
+                    _SampleDataPrompt(busy: _seeding, onLoad: _loadSample),
+                    const SizedBox(height: 16),
+                  ],
                   _PredictionCard(prediction: prediction),
                   const SizedBox(height: 16),
                   _StatsRow(
@@ -269,6 +286,62 @@ class _ConfidenceChip extends StatelessWidget {
       backgroundColor: color.withValues(alpha: 0.18),
       side: BorderSide(color: color.withValues(alpha: 0.5)),
       label: Text(label, style: TextStyle(color: color.shade900)),
+    );
+  }
+}
+
+class _SampleDataPrompt extends StatelessWidget {
+  const _SampleDataPrompt({required this.busy, required this.onLoad});
+
+  final bool busy;
+  final VoidCallback onLoad;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return Card(
+      color: scheme.tertiaryContainer,
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.auto_awesome_rounded,
+                    color: scheme.onTertiaryContainer,),
+                const SizedBox(width: 8),
+                Text('New here? Try it with sample data',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: scheme.onTertiaryContainer,
+                          fontWeight: FontWeight.bold,
+                        ),),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Load a realistic month of readings, period starts and symptom '
+              'logs so you can explore every feature straight away. (Also on '
+              'the My Profile page.)',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: scheme.onTertiaryContainer,
+                  ),
+            ),
+            const SizedBox(height: 14),
+            FilledButton.icon(
+              onPressed: busy ? null : onLoad,
+              icon: busy
+                  ? const SizedBox(
+                      width: 18,
+                      height: 18,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : const Icon(Icons.download_rounded),
+              label: const Text('Load a month of sample data'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
