@@ -44,11 +44,11 @@ your own Pod**, and you decide if anyone else ever sees it.
 
 ## How it uses Solid
 
-- **Reads and writes** all health data to the user's Pod through an
+- **Stores** all health data to the user's Pod through an
   authenticated Solid session (`readPod` / `writePod`).
-- **Encryption is the headline:** every record is written with
+- **Encryption is the main theme:** every record is written with
   `writePod(encrypted: true)` — the Pod stores ciphertext.
-- **Access control (WAC/ACP) + consent:** the Privacy screen uses
+- **Access control:** the Privacy screen uses
   `grantPermission` / `readPermission` / `revokePermission` to share read-only
   and revoke, each behind an explicit consent step.
 - **Data minimisation:** empty days are pruned; only what you log is stored.
